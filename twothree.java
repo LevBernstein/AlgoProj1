@@ -49,11 +49,35 @@ public class twothree {
         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out, "ASCII"), 4096);
         // Note: if x > y, call printRange on y, x
         // If you printRange("a", "z"), it will look for everything alphabetically from a to z. Even if there aren't leaves exactly equivalent to a or z, it will print everything in that range.
+        // Use s1.compareTo(s2)
+        int numPlanets;
         String key;
         int value;
+        int routes;
+        String[] buff;
         TwoThreeTree tree = new TwoThreeTree();
-        insert("jeff", 20, tree);
-        printRange(tree.root, "a", "b", tree.height, "", output);
+        Scanner scan = new Scanner(System.in);
+        numPlanets = scan.nextInt();
+        scan.nextLine();
+        for (int i = 0; i < numPlanets; i++) {
+            buff = scan.nextLine().split(" ");
+            key = buff[0];
+            value = Integer.parseInt(buff[1]);
+            insert(key, value, tree);
+        }
+        routes = scan.nextInt();
+        scan.nextLine();
+        String[] starts = new String[routes];
+        String[] ends = new String[routes];
+        for (int i = 0; i < routes; i++) {
+            buff = scan.nextLine().split(" ");
+            starts[i] = buff[0];
+            ends[i] = buff[1];
+        }
+        
+        for (int i = 0; i < routes; i++) {
+            printRange(tree.root, starts[i], ends[i], tree.height, "", output);
+        }
         
         
         output.flush();
