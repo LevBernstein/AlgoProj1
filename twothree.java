@@ -45,14 +45,22 @@ class WorkSpace {
     
 public class twothree {
     
-    public static void main(String[] args) {
-        // TODO
+    public static void main(String[] args) throws Exception {
+        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out, "ASCII"), 4096);
         // Note: if x > y, call printRange on y, x
         // If you printRange("a", "z"), it will look for everything alphabetically from a to z. Even if there aren't leaves exactly equivalent to a or z, it will print everything in that range.
+        String key;
+        int value;
+        TwoThreeTree tree = new TwoThreeTree();
+        insert("jeff", 20, tree);
+        printRange(tree.root, "a", "b", tree.height, -1000, output);
+        
+        
+        output.flush();
     }
     
-    static void printRange(Node p, String x, String y, int h, int lo) {
-        
+    static void printRange(Node p, String x, String y, int h, int lo, BufferedWriter output) throws Exception {
+        output.write("s");
     }
     
     static void insert(String key, int value, TwoThreeTree tree) {
