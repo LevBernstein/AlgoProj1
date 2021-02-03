@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 /**
  * Basic Algorithms Programming Assignment 1: Ford's Dilemma 1
@@ -20,7 +21,6 @@ class InternalNode extends Node {
 
 class LeafNode extends Node {
     // guide points to the key
-    
     int value;
 }
 
@@ -31,13 +31,12 @@ class TwoThreeTree {
     TwoThreeTree() {
         root = null;
         height = -1;
+        // Empty tree has a height of -1; tree with just root has a height of 0, as the root is 0 away from the leaves
     }
 }
     
 class WorkSpace {
-    // this class is used to hold return values for the recursive doInsert
-    // routine (see below)
-    
+    // this class is used to hold return values for the recursive doInsert routine (see below)
     Node newNode;
     int offset;
     boolean guideChanged;
@@ -48,11 +47,16 @@ public class twothree {
     
     public static void main(String[] args) {
         // TODO
+        // Note: if x > y, call printRange on y, x
+        // If you printRange("a", "z"), it will look for everything alphabetically from a to z. Even if there aren't leaves exactly equivalent to a or z, it will print everything in that range.
+    }
+    
+    static void printRange(Node p, String x, String y, int h, int lo) {
+        
     }
     
     static void insert(String key, int value, TwoThreeTree tree) {
-        // insert a key value pair into tree (overwrite existsing value
-        // if key is already present)
+        // insert a key value pair into tree (overwrite existing value if key is already present)
         
         int h = tree.height;
         
@@ -91,8 +95,7 @@ public class twothree {
         // auxiliary recursive routine for insert
         
         if (h == 0) {
-            // we're at the leaf level, so compare and 
-            // either update value or insert new leaf
+            // we're at the leaf level, so compare and either update value or insert new leaf
             
             LeafNode leaf = (LeafNode) p; //downcast
             int cmp = key.compareTo(leaf.guide);
