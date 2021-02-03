@@ -109,7 +109,7 @@ public class twothree {
         
         printRange(p.child0, x, y, h - 1, lo);
         printRange(p.child1, x, y, h - 1, p.child0.guide);
-        if ((p.child2) != null)
+        if (p.child2 != null)
             printRange(p.child2, x, y, h - 1, p.child1.guide);
     }
     
