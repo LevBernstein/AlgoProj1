@@ -31,7 +31,7 @@ class TwoThreeTree {
     TwoThreeTree() {
         root = null;
         height = -1;
-        // Empty tree has a height of -1; tree with just root has a height of 0, as the root is 0 away from the leaves
+        // empty tree has a height of -1; tree with just root has a height of 0, as the root is 0 away from the leaves
     }
 }
     
@@ -45,11 +45,11 @@ class WorkSpace {
     
 public class twothree {
     
-    public static void main(String[] args) throws Exception { //Any method using BufferedWriter must be wrapped with throws Exception
+    public static void main(String[] args) throws Exception { // any method using BufferedWriter must be wrapped with throws Exception
         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out, "ASCII"), 4096);
-        // Note: if x > y, call printRange on y, x
-        // If you printRange("a", "z"), it will look for everything alphabetically from a to z. Even if there aren't leaves exactly equivalent to a or z, it will print everything in that range.
-        // Use s1.compareTo(s2)
+        // note: if x > y, call printRange on y, x
+        // if you printRange("a", "z"), it will look for everything alphabetically from a to z. Even if there aren't leaves exactly equivalent to a or z, it will print everything in that range.
+        // use s1.compareTo(s2)
         int numPlanets;
         String key;
         int value;
@@ -80,19 +80,37 @@ public class twothree {
         
         for (int i = 0; i < routes; i++) {
             if (starts[i].compareTo(ends[i]) <= 0) { // if x <= y
-                printRange(tree.root, starts[i], ends[i], tree.height, "", output); //We need to start with lo = -infinity. The smallest possible string for compareTo in Java is the empty string ""
+                output.write("x < y\n");
+                printRange(tree.root, starts[i], ends[i], tree.height, "", output); // we need to start with lo = -infinity. The smallest possible string for compareTo in Java is the empty string ""
             }
             else {
+                output.write("x > y\n");
                 printRange(tree.root, ends[i], starts[i], tree.height, "", output);
             }
         }
-        
         
         output.flush(); // flush system.out at the end of main
     }
     
     static void printRange(Node p, String x, String y, int h, String lo, BufferedWriter output) throws Exception {
-        output.write("Staring print\n");
+        output.write("Starting print.\n");
+        if (h == 0) {
+            if (p.guide.compareTo(x) >= 0 && p.guide.compareTo(y) <= 0) { // if p's guide is between x and y, inclusive, then p is a leaf node
+                output.write(p.guide + " " + String.valueOf(p.value) + "\n");
+                return;
+            }
+        }
+        
+        if (y.compareTo(lo) <= 0)
+            return;
+        String hi = p.guide;
+        if (hi.compareTo(x) < 0)
+            return;
+        
+        printRange(p.child0, x, y, h - 1, lo);
+        printRange(p.child1, x, y, h - 1, p.child0.guide);
+        if ((p.child2) != null)
+            printRange(p.child2, x, y, h - 1, p.child1.guide);
     }
     
     static void insert(String key, int value, TwoThreeTree tree) {
