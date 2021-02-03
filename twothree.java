@@ -45,7 +45,7 @@ class WorkSpace {
     
 public class twothree {
     
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception { //Any method using BufferedWriter must be wrapped with throws Exception
         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out, "ASCII"), 4096);
         // Note: if x > y, call printRange on y, x
         // If you printRange("a", "z"), it will look for everything alphabetically from a to z. Even if there aren't leaves exactly equivalent to a or z, it will print everything in that range.
@@ -54,6 +54,8 @@ public class twothree {
         String key;
         int value;
         int routes;
+        String[] starts;
+        String[] ends;
         String[] buff;
         TwoThreeTree tree = new TwoThreeTree();
         Scanner scan = new Scanner(System.in);
@@ -64,11 +66,12 @@ public class twothree {
             key = buff[0];
             value = Integer.parseInt(buff[1]);
             insert(key, value, tree);
+            output.write("Inserting node with key " + key + " and value " + String.valueOf(value) + ".\n");
         }
         routes = scan.nextInt();
         scan.nextLine();
-        String[] starts = new String[routes];
-        String[] ends = new String[routes];
+        starts = new String[routes];
+        ends = new String[routes];
         for (int i = 0; i < routes; i++) {
             buff = scan.nextLine().split(" ");
             starts[i] = buff[0];
@@ -76,15 +79,20 @@ public class twothree {
         }
         
         for (int i = 0; i < routes; i++) {
-            printRange(tree.root, starts[i], ends[i], tree.height, "", output);
+            if (starts[i].compareTo(ends[i]) <= 0) { // if x <= y
+                printRange(tree.root, starts[i], ends[i], tree.height, "", output); //We need to start with lo = -infinity. The smallest possible string for compareTo in Java is the empty string ""
+            }
+            else {
+                printRange(tree.root, ends[i], starts[i], tree.height, "", output);
+            }
         }
         
         
-        output.flush();
+        output.flush(); // flush system.out at the end of main
     }
     
     static void printRange(Node p, String x, String y, int h, String lo, BufferedWriter output) throws Exception {
-        output.write("s");
+        output.write("Staring print\n");
     }
     
     static void insert(String key, int value, TwoThreeTree tree) {
@@ -248,6 +256,3 @@ public class twothree {
         return resetGuide(q);
     }
 }
-                                        
-                                        
-                    
