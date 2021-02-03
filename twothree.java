@@ -53,13 +53,13 @@ public class twothree {
         int value;
         TwoThreeTree tree = new TwoThreeTree();
         insert("jeff", 20, tree);
-        printRange(tree.root, "a", "b", tree.height, -1000, output);
+        printRange(tree.root, "a", "b", tree.height, "", output);
         
         
         output.flush();
     }
     
-    static void printRange(Node p, String x, String y, int h, int lo, BufferedWriter output) throws Exception {
+    static void printRange(Node p, String x, String y, int h, String lo, BufferedWriter output) throws Exception {
         output.write("s");
     }
     
