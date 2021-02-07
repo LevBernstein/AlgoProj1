@@ -96,8 +96,8 @@ public class twothree {
     static void printRange(Node p, String x, String y, int h, String lo, BufferedWriter output) throws Exception {
         //output.write("Starting print.\n");
         if (h == 0) {
-            if (p.guide.compareTo(x) >= 0 && p.guide.compareTo(y) <= 0) { // if p's guide is between x and y, inclusive, then p is a leaf node
-                LeafNode leaf = (LeafNode) p; // must cast to a leaf node in order to access the node's value'
+            if (p.guide.compareTo(x) >= 0 && p.guide.compareTo(y) <= 0) { // if p's guide is between x and y, inclusive, then p is a leaf node we want to print
+                LeafNode leaf = (LeafNode) p; // must cast to a leaf node in order to access the node's value
                 output.write(leaf.guide + " " + String.valueOf(leaf.value) + "\n");
                 return;
             }
@@ -107,6 +107,10 @@ public class twothree {
             return;
         String hi = p.guide;
         if (hi.compareTo(x) < 0)
+            return;
+        
+        if (p instanceof LeafNode) // this handles an error I was getting with certain sufficiently large sample inputs, caused by casting a LeafNode to an InternalNode.
+            // this shouldn't need to be here, really; I don't know why those LeafNodes were getting through the part of printRange devoted to them. It does fix those errors, though, so here it will stay.
             return;
         
         InternalNode internal = (InternalNode) p; // must cast to an internal node in order to access child0, child1, child2
