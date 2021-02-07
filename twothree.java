@@ -96,7 +96,8 @@ public class twothree {
         output.write("Starting print.\n");
         if (h == 0) {
             if (p.guide.compareTo(x) >= 0 && p.guide.compareTo(y) <= 0) { // if p's guide is between x and y, inclusive, then p is a leaf node
-                output.write(p.guide + " " + String.valueOf(p.value) + "\n");
+		LeafNode leaf = (LeafNode) p;
+		output.write(leaf.guide + " " + String.valueOf(leaf.value) + "\n");
                 return;
             }
         }
@@ -106,11 +107,11 @@ public class twothree {
         String hi = p.guide;
         if (hi.compareTo(x) < 0)
             return;
-        
-        printRange(p.child0, x, y, h - 1, lo);
-        printRange(p.child1, x, y, h - 1, p.child0.guide);
-        if (p.child2 != null)
-            printRange(p.child2, x, y, h - 1, p.child1.guide);
+        InternalNode internal = (InternalNode) p;
+        printRange(internal.child0, x, y, h - 1, lo, output);
+        printRange(internal.child1, x, y, h - 1, internal.child0.guide, output);
+        if (internal.child2 != null)
+            printRange(internal.child2, x, y, h - 1, internal.child1.guide, output);
     }
     
     static void insert(String key, int value, TwoThreeTree tree) {
@@ -218,7 +219,7 @@ public class twothree {
                     ws.guideChanged = resetGuide(q);
                 }
             }
-                    
+	    
             return ws;
         }
     }
@@ -235,7 +236,7 @@ public class twothree {
         }
         return sz;
     }
-                                        
+    
     static void insertNode(Node[] x, Node p, int sz, int pos) {
         // insert p in x[0..sz) at position pos,
         // moving existing extries to the right
@@ -257,8 +258,8 @@ public class twothree {
         
         return q.guide != oldGuide;
     }
-                                        
-                                        
+    
+    
     static boolean resetChildren(InternalNode q, Node[] x, int pos, int sz) {
         // reset q's children to x[pos..pos+sz), where sz is 2 or 3.
         // also resets guide, and returns the result of that
