@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * Basic Algorithms Programming Assignment 1: Ford's Dilemma 1
  * @author Lev Bernstein
- * Provided code: Node, InternalNode, LeafNode, TwoThreeTree, Workspace, insert, doInsert, copyOutChildren, insertNode, resetGuide, resetChildren
+ * Provided code: everything but main() and printRange()
  */
 
 
@@ -47,9 +47,7 @@ public class twothree {
     
     public static void main(String[] args) throws Exception { // any method using BufferedWriter must be wrapped with throws Exception
         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out, "ASCII"), 4096);
-        // note: if x > y, call printRange on y, x
-        // if you printRange("a", "z"), it will look for everything alphabetically from a to z. Even if there aren't leaves exactly equivalent to a or z, it will print everything in that range.
-        // use s1.compareTo(s2)
+        Scanner scan = new Scanner(System.in);
         int numPlanets;
         String key;
         int value;
@@ -58,18 +56,21 @@ public class twothree {
         String[] ends;
         String[] buff;
         TwoThreeTree tree = new TwoThreeTree();
-        Scanner scan = new Scanner(System.in);
+        
         numPlanets = scan.nextInt();
         scan.nextLine();
+        
         for (int i = 0; i < numPlanets; i++) {
             buff = scan.nextLine().split(" ");
             key = buff[0];
             value = Integer.parseInt(buff[1]);
             insert(key, value, tree);
-            output.write("Inserting node with key " + key + " and value " + String.valueOf(value) + ".\n");
+            //output.write("Inserting node with key " + key + " and value " + String.valueOf(value) + ".\n");
         }
+        
         routes = scan.nextInt();
         scan.nextLine();
+        
         starts = new String[routes];
         ends = new String[routes];
         for (int i = 0; i < routes; i++) {
@@ -80,24 +81,24 @@ public class twothree {
         
         for (int i = 0; i < routes; i++) {
             if (starts[i].compareTo(ends[i]) <= 0) { // if x <= y
-                output.write("x < y\n");
+                //output.write("x < y\n");
                 printRange(tree.root, starts[i], ends[i], tree.height, "", output); // we need to start with lo = -infinity. The smallest possible string for compareTo in Java is the empty string ""
             }
             else {
-                output.write("x > y\n");
+                //output.write("x > y\n");
                 printRange(tree.root, ends[i], starts[i], tree.height, "", output);
             }
         }
         
-        output.flush(); // flush system.out at the end of main
+        output.flush(); // flush System.out at the end of main
     }
     
     static void printRange(Node p, String x, String y, int h, String lo, BufferedWriter output) throws Exception {
-        output.write("Starting print.\n");
+        //output.write("Starting print.\n");
         if (h == 0) {
             if (p.guide.compareTo(x) >= 0 && p.guide.compareTo(y) <= 0) { // if p's guide is between x and y, inclusive, then p is a leaf node
-		LeafNode leaf = (LeafNode) p;
-		output.write(leaf.guide + " " + String.valueOf(leaf.value) + "\n");
+                LeafNode leaf = (LeafNode) p; // must cast to a leaf node in order to access the node's value'
+                output.write(leaf.guide + " " + String.valueOf(leaf.value) + "\n");
                 return;
             }
         }
@@ -107,10 +108,11 @@ public class twothree {
         String hi = p.guide;
         if (hi.compareTo(x) < 0)
             return;
-        InternalNode internal = (InternalNode) p;
+        
+        InternalNode internal = (InternalNode) p; // must cast to an internal node in order to access child0, child1, child2
         printRange(internal.child0, x, y, h - 1, lo, output);
         printRange(internal.child1, x, y, h - 1, internal.child0.guide, output);
-        if (internal.child2 != null)
+        if (internal.child2 != null) // if the node has a 3rd child:
             printRange(internal.child2, x, y, h - 1, internal.child1.guide, output);
     }
     
